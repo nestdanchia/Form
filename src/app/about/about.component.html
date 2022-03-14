@@ -1,0 +1,73 @@
+<p>about works!</p>
+
+<form [formGroup]="skillsForm" (ngSubmit)="onSubmit()">
+ 
+    <p>
+      <label for="name">Name </label>
+      <input type="text" id="name" name="name" formControlName="name">
+    </p>
+   
+   
+    Skills:
+    <div formArrayName="skills">
+      <div *ngFor="let skill of skills.controls; let i=index">
+        <div [formGroupName]="i">
+          {{i}}
+          skill name :
+          <input type="text" formControlName="skill">
+          exp:
+          <input type="text" formControlName="exp">
+   
+          <button (click)="removeSkill(i)">Remove</button>
+        </div>
+      </div>
+    </div>
+   
+    <p>
+      <button type="submit">Submit</button>
+    </p>
+   
+  </form>
+   
+   
+  <p>
+    <button type="button" (click)="addSkills()">Add</button>
+  </p>
+   
+  {{this.skillsForm.value | json}}
+
+ <app-team></app-team>
+  
+  
+  
+<!--
+<form [formGroup]="formGroup">
+    <h3>
+      Experiencia Laboral:
+    </h3>
+    <div formArrayName="arrayName">
+      <div *ngFor="let trabajo of arrayName.controls;let i = index;">
+        <div>
+          <label>Some:</label><br />
+          <input type="text" />
+        </div>
+        <div>
+          <label>Pacient:</label><br />
+          <input type="text" />
+        </div>
+        <div>
+          <label>Descripción:</label><br />
+          <textarea></textarea>
+        </div>
+        <button (click)="delete(i)">Delete</button>
+
+      </div>  
+
+      </div> 
+    </form>
+
+    <button (click)=" addItem()">
+        + Añadir
+      </button>
+    -->
+     

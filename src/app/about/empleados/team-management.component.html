@@ -1,0 +1,36 @@
+<h3>Create New Team</h3>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Crear Team</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    
+  <form [formGroup]="teamForm" (ngSubmit)="onFormSubmit()">
+    
+   <h2>Team Name :</h2> 
+      <mat-form-field >
+      <input matInput formControlName="teamName">
+     
+      </mat-form-field>
+    <mat-error>  
+      <span *ngIf="!teamName?.valid && teamName?.touched">Please enter Team Name !!!</span>  
+  </mat-error>  
+    
+
+  
+    
+    <h2>Employees in Team:</h2>
+  
+     
+ 
+  
+  
+      <app-list-other-condition [formGroup]="teamForm" [employees]="employees" ></app-list-other-condition>
+      <mat-card-actions>
+      <button mat-flat-button color="primary" type="submit" [disabled]="!teamForm.valid">SUBMIT</button>
+      </mat-card-actions>
+  </form>
+</mat-card-content>
+  
+</mat-card>
+<p>Form Status: {{ teamForm.status }}</p>

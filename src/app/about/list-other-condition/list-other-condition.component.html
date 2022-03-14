@@ -1,0 +1,60 @@
+<p>list-other-condition works!</p>
+<form [formGroup]="formGroup">
+    <div formArrayName="employees">
+        <div *ngFor="let emp of employees.controls; let i = index" [formGroupName]="i" class="employee">
+            
+          <mat-label>Employee : {{i + 1}}</mat-label>
+       
+            <mat-label>Name :</mat-label> 
+            <mat-form-field >
+            <input matInput formControlName="empName">
+            
+          </mat-form-field>
+          <mat-error *ngIf="employees.controls[i].get('empName')?.errors?.required">empName is required</mat-error>
+            
+            
+            
+          Age :
+            <mat-form-field >
+            <input matInput formControlName="age">
+            
+          </mat-form-field>
+          <mat-error   *ngIf="employees.controls[i].get('age')?.errors?.required"> Age required.</mat-error>
+          <mat-error *ngIf="employees.controls[i].get('age')?.errors?.min">
+           
+            Minimum age is 21.
+        
+</mat-error>
+
+
+            
+            
+             
+             
+             
+            
+           
+
+          <h2>Skill :</h2>
+          <mat-form-field>
+            <mat-label>Your skill</mat-label>
+            <mat-select  formControlName="skill"required>
+              <mat-option *ngFor="let skill of allSkills | async" [value]="skill.name" >
+                {{ skill.displayName }}
+              </mat-option>
+            </mat-select>
+            
+            
+            </mat-form-field>
+            <mat-error
+              *ngIf="employees.controls[i].get('skill')?.errors?.required"
+             
+              >You must make a selection </mat-error>
+         <p>
+            <button mat-flat-button color="primary" type="button" (click)="deleteEmployee(i)">Delete</button>
+          </p> 
+        
+      </div>
+      <button mat-flat-button color="primary" type="button" (click)="addEmployee()">Add More Employee</button>
+    </div>
+    </form>
