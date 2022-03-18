@@ -1,0 +1,61 @@
+<section>
+    <article >
+  
+      <div class="body">
+  
+  <form (ngSubmit)="onSubmit()" method="post" #f="ngForm">
+  
+  
+  <div class="form-group">
+      <label for="name">{{prod.title}}</label>
+      <div>
+        <input type="text" name="name" [(ngModel)]="product.name" class="form-control">
+      </div>
+  </div>
+  
+  <div class="form-group">
+      <label for="name">{{prod.des}}</label>
+      <div>
+        <input type="text" name="name" [(ngModel)]="product.descri"class="form-control" >
+      </div>
+  </div>
+  
+  <div class="form-group">
+      <label for="name" class="co-form-label col-sm-2">{{prod.im}}</label>
+      <div class="col-sm-6">
+        <input type="text" name="img" [(ngModel)]="product.img" class="form-control">
+      </div>
+  </div>
+  
+  <div class="form-group" >
+      <label for="name" >{{prod.pri}}</label>
+      <div>
+        <input type="text" name="price"  [(ngModel)]="product.detail[0].price"class="form-control">
+      </div>
+      <label for="" >{{prod.exi}}</label>
+      <div>
+        <input type="text" name="exist"  [(ngModel)]="product.detail[0].exist" class="form-control">
+      </div>
+      
+  </div>
+  
+  
+  
+  <div >
+    <div>
+        <button type="submit" name="button">Register</button>
+        </div>
+    </div>
+    
+    
+    </form>
+    
+    
+        </div>
+      </article>
+    
+    </section>
+<hr>
+<pre>{{f.value | json}}</pre>
+<pre>{{product.detail[0].username}}</pre>
+<pre>{{product.detail[0].createInit}}</pre>
