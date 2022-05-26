@@ -1,6 +1,8 @@
-import { AfterViewInit, Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
+import { DomSanitizer } from '@angular/platform-browser';
+
 interface Food {
   value: string;
   viewValue: string;
@@ -86,6 +88,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./select.component.css']
 })
 export class SelectComponent implements AfterViewInit, OnInit {
+  @ViewChild('videoPlayer') videoplayer!: ElementRef;
+vid1='C:\Users\NESTDAN\Documents\Nestor\FormArray-main\FormArray-main\src\assets\ortega.mp4'
+videoRelativo="../../assets/ortega.mp4"
   public myForm!: FormGroup;
   selectFood: SelectedFood[] = []
   selectFoodName: SelectedFood[] = []
@@ -123,9 +128,12 @@ export class SelectComponent implements AfterViewInit, OnInit {
 
   ];
   // https://embed.plnkr.co/plunk/pGUluU
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private sanitizer: DomSanitizer) {
 
   }
+  public getSantizeUrl(url : string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+}
   // { onlySelf: true } mo burbujea
   ngOnInit() {
     const localseleccion = localStorage.getItem('selectNames') || 'default-token';
@@ -161,7 +169,12 @@ export class SelectComponent implements AfterViewInit, OnInit {
     // this.select.optionSelectionChanges.subscribe(res => {console.log('select',res)});
 
   }
-
+  toggleVideo(event: any) {
+    this.videoplayer.nativeElement.play();
+}
+getlink():any {
+  return this.sanitizer.bypassSecurityTrustUrl(this.vid1);
+}
   onChange(event: Event) {
 
 

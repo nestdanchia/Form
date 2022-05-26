@@ -14,9 +14,17 @@
       </mat-form-field>
     <mat-error>  
       <span *ngIf="!teamName?.valid && teamName?.touched">Please enter Team Name !!!</span>  
-  </mat-error>  
-    
-
+  </mat-error>
+  <h2>Nombre</h2>
+  <mat-form-field >
+    <input matInput formControlName="nombre">
+   
+    </mat-form-field>
+    <h2>Edad</h2>
+    <mat-form-field >
+      <input matInput formControlName="edad">
+     
+      </mat-form-field>
   
     
     <h2>Employees in Team:</h2>

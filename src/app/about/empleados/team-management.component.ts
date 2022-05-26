@@ -25,6 +25,8 @@ export class TeamManagementComponent implements OnInit {
 	ngOnInit() {
 		this.teamForm = this.formBuilder.group({
 			teamName: ['', Validators.required],
+			nombre: ['', Validators.required],
+			edad: ['', Validators.required],
 			employees: this.formBuilder.array([])
 				
 		});

@@ -15,11 +15,17 @@ export class ListOtherConditionComponent implements OnInit {
   @Input()
   employees!:  FormArray
   allSkills!: Observable<any[]>;
-  constructor(private fbchild: FormBuilder,private teamMngService: TeamManagementService, private fb: FormBuilder, private readonly cdr: ChangeDetectorRef){
+  constructor(private fbchild: FormBuilder,
+    private teamMngService: TeamManagementService,
+     private fb: FormBuilder, private readonly  cdr: ChangeDetectorRef){
+    
     this.allSkills = this.teamMngService.getSkills()
   }
   
   ngOnInit(): void {
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
+
     if (this.employees.length === 0)
     this.addEmployee();
 
@@ -43,13 +49,16 @@ export class ListOtherConditionComponent implements OnInit {
   createEmpFormGroup() {
 		return this.fb.group({
 			//empName: ['', [Validators.required]],
-      empName:this.fbchild.control(null, Validators.required),
+      empName:this.formGroup.controls.nombre,
+//empName:this.fbchild.control(null, Validators.required),
 		//	age: ['', [Validators.required,Validators.min(21)]],
     age:this.fbchild.control(null, [Validators.required,Validators.min(21)]),
 		//	skill: ['', [Validators.required]],
     skill:this.fbchild.control(null, Validators.required),
 		})}
-
+    refresh() {
+      this.cdr.detectChanges();
+    }
 }
 /*
   <!-- error -->

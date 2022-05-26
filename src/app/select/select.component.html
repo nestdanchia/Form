@@ -128,4 +128,18 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
+FormArray-main\src\assets\ortega.mp4
+C:\Users\NESTDAN\Documents\Nestor\FormArray-main\FormArray-main\src\assets\ortega.mp4
+<video  width="550" controls (click)="toggleVideo($event)" #videoPlayer>
+
+  <source src="../../assets/ortega.mp4" type="video/mp4"/>
+  
+</video>
+
 -->
+
+<!--<a [href]="getlink() " type="video/mp4"> link  </a> GET unsafe C:Users..-->
+<video  width="550" controls (click)="toggleVideo($event)"type="video/mp4" >
+<source src="{{videoRelativo}}"/>
+
+</video>

@@ -1,13 +1,97 @@
-<p>about works!</p>
+<section>
+  <form [formGroup]="persForm" (ngSubmit)="onPers()">
+    <mat-form-field>
+      <mat-label for="nombre">Nombre </mat-label>
 
-<form [formGroup]="skillsForm" (ngSubmit)="onSubmit()">
- 
+      <input matInput type="text" id="nombre" name="nombre" formControlName="nombre">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="apellidos">Apellidos </mat-label>
+
+      <input matInput type="text" id="apellidos" name="apellidos" formControlName="apellidos">
+
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label for="edad">Edad </mat-label>
+
+      <input matInput type="text" id="edad" name="edad" formControlName="edad">
+
+    </mat-form-field>
+    <p>
+      <button mat-flat-button color="primary" type="submit">Registrar</button>
+    </p>
+    <p>
+    <p>
+      <button mat-fab color="primary" (click)="clear()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </p>
+
+  </form>
+</section>
+
+{{this.arryForm.value | json}}
+
+<section>
+  <form [formGroup]="arryForm" (ngSubmit)="onPersona()">
+    <div formArrayName="gente">
+      <div *ngFor="let persona of gente.controls; let i=index" [formGroupName]="i">
+        <mat-label>Persona : {{i + 1}}</mat-label>
+        <br>
+        <mat-form-field>
+          <mat-label>Nombre:</mat-label>
+
+          <input matInput type="text" formControlName="nombre">
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>Apellido:</mat-label>
+
+          <input matInput type="text" formControlName="apellidos">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Edad:</mat-label>
+
+          <input matInput type="text" formControlName="edad">
+        </mat-form-field>
+        <p>
+          <button mat-flat-button color="primary" type="button" (click)="deletePersona(i)">Delete</button>
+        </p>
+        <p>
+          <button mat-flat-button color="primary" type="button" (click)="update(i)">Modificar</button>
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <p>
+      <button mat-flat-button color="primary" type="submit">Submit</button>
+    </p>
+
+  </form>
+  <p>
+    <button mat-flat-button color="primary" type="button" (click)="addPersona()">Copiar Persona En arrayForm </button>
+  </p>
+</section>
+
+
+
+<section>
+
+  <form [formGroup]="skillsForm" (ngSubmit)="onSubmit()">
+
     <p>
       <label for="name">Name </label>
       <input type="text" id="name" name="name" formControlName="name">
     </p>
-   
-   
+
+
     Skills:
     <div formArrayName="skills">
       <div *ngFor="let skill of skills.controls; let i=index">
@@ -17,30 +101,134 @@
           <input type="text" formControlName="skill">
           exp:
           <input type="text" formControlName="exp">
-   
+
           <button (click)="removeSkill(i)">Remove</button>
         </div>
       </div>
     </div>
-   
+
     <p>
       <button type="submit">Submit</button>
     </p>
-   
-  </form>
-   
-   
-  <p>
-    <button type="button" (click)="addSkills()">Add</button>
-  </p>
-   
-  {{this.skillsForm.value | json}}
 
- <app-team></app-team>
-  
-  
-  
+  </form>
+
+</section>
+<p>
+  <button type="button" (click)="addSkills()">Add</button>
+</p>
+
+{{this.skillsForm.value | json}}
+
+<app-team></app-team>
+
+<h3>Person Form</h3>
+<form [formGroup]="personForm" (ngSubmit)="onFormSubmit()">
+  <table>
+    <tr>
+      <td>
+        Name:
+        <input formControlName="pname">
+        <label *ngIf="pname.errors?.required" class="error">
+          Name required.
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="radio" value="true" formControlName="isIndian"> Indian
+        <input type="radio" value="false" formControlName="isIndian"> Others
+        <br />
+        <label *ngIf="isIndian.errors?.required" class="error">
+          Select nationality.
+        </label>
+      </td>
+    </tr>
+    <ng-container *ngIf="isIndian.value === 'false'">
+      <tr>
+        <td>
+          Nationality:
+          <input formControlName="nationality">
+          <label *ngIf="personForm.get('nationality')?.errors?.required" class="error">
+            Enter nationality.
+          </label>
+        </td>
+      </tr>
+    </ng-container>
+    <tr>
+      <td>
+        <input type="radio" value="true" formControlName="isEmp"> Employee
+        <input type="radio" value="false" formControlName="isEmp"> Student
+        <br />
+        <label *ngIf="isEmp.errors?.required" class="error">
+          Select any.
+        </label>
+      </td>
+    </tr>
+    <ng-container *ngIf="isEmp.value === 'true'">
+      <tr>
+        <td>
+          <div formGroupName="company">
+            <table>
+              <tr>
+                <td>Company:</td>
+                <td>
+                  <input formControlName="compName">
+                  <label *ngIf="companyFG?.get('compName')?.errors?.required" class="error">
+                    Enter company name.
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>Location:</td>
+                <td>
+                  <input formControlName="compLocation">
+                  <label *ngIf="companyFG.get('compLocation')?.errors?.required" class="error">
+                    Enter company location.
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>Profile:</td>
+                <td>
+                  <input formControlName="profile">
+                  <label *ngIf="companyFG.get('profile')?.errors?.required" class="error">
+                    Enter profile.
+                  </label>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <tr>
+      <td>
+        <input type="checkbox" formControlName="favBookEntry"> Enter favorite books?
+      </td>
+    </tr>
+    <ng-container *ngIf="favBookEntry.value === true">
+      <tr>
+        <td>
+          <div formArrayName="favBooks">
+            <div *ngFor="let b of favBooks.controls; index as i">
+              <input [formControlName]="i">
+              <label *ngIf="favBooks.controls[i].errors?.required" class="error">
+                Enter the name.
+              </label>
+              <button type="button" (click)="deleteBook(i)">Delete</button>
+            </div>
+          </div>
+          <button type="button" (click)="addMoreBooks()">Add More Books</button>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+  <button>Submit</button>
+</form>
+
 <!--
+  https://www.digitalocean.com/community/tutorials/angular-change-detection-strategy
 <form [formGroup]="formGroup">
     <h3>
       Experiencia Laboral:
@@ -69,5 +257,35 @@
     <button (click)=" addItem()">
         + Añadir
       </button>
+
+--------------------------------------------------------
+<section>
+  <form [formGroup]="arryForm" (ngSubmit)="onPersona()">
+    <div formArrayName="gente">
+      <div *ngFor="let persona of gente.controls; let i=index">
+        <div [formGroupName]="i">
+          {{i}}
+          Nombre:
+          <input type="text" formControlName="nombre">
+          Apellido:
+          <input type="text" formControlName="apellidos">
+          Edad:
+          <input type="text" formControlName="edad">
+          
+        </div>
+
+      </div>
+    </div>
+    <p>
+      <button type="submit">Submit</button>
+    </p>
+   
+  </form>
+  <p>
+    <button type="button" (click)="addGente()">Agregar Persona</button>
+  </p>
+</section>
+
+
+
     -->
-     

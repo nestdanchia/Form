@@ -9,10 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
+import { SafePipe } from '../safe.pipe';
 // Angular extension might not work correctly because ngcc operation failed. Try to invoke ngcc manually by running 'npm/yarn run ngcc'. Please see the extension output for more information.
 @NgModule({
   declarations: [
-    SelectComponent
+    SelectComponent,
+    SafePipe 
   ],
   imports: [
     CommonModule,
