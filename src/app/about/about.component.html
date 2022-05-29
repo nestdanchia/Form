@@ -31,8 +31,20 @@
   </form>
 </section>
 
+{{ this.observableOutput$| async| json}}
 {{this.arryForm.value | json}}
-
+<h2>Subject</h2>
+{{subjectGente$| async| json}}
+<br>
+<h2>Cambio Nombre:</h2>
+{{subjectNombre$| async| json}}
+<br>
+<h2>Cambio Apellidos:</h2>
+{{subjectApellido$| async| json}}
+<br>
+<h2>Cambio Edad:</h2>
+{{subjectEdad$| async| json}}
+<br>
 <section>
   <form [formGroup]="arryForm" (ngSubmit)="onPersona()">
     <div formArrayName="gente">

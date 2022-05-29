@@ -1,10 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
-import { debounceTime } from "rxjs/operators";
+import { debounceTime, startWith } from "rxjs/operators";
 import * as _ from 'lodash';
 import { debounce } from 'lodash';
-// https://www.concretepage.com/angular/angular-formarray-validation
+import { BehaviorSubject, Observable } from 'rxjs';
+
+// https://www.concretepage.com/angular/angular-formarrayformarray-validation
 // https://bobbyhadz.com/blog/typescript-object-is-possibly-null#:~:text=The%20%22Object%20is%20possibly%20'null,not%20null%20before%20accessing%20properties.
 @Component({
   selector: 'app-about',
@@ -12,6 +14,15 @@ import { debounce } from 'lodash';
   styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
+  nombreF!:string;
+  apellidosF!:string;
+  edadF!:string;
+  observableOutput$!:Observable<string[]>;
+  subjectGente$:BehaviorSubject<string[]>=new BehaviorSubject<string[]>([]);
+  subjectEdad$:BehaviorSubject<any>=new BehaviorSubject<string>('');
+  subjectNombre$:BehaviorSubject<string>=new BehaviorSubject<string>('');
+  subjectApellido$:BehaviorSubject<any>=new BehaviorSubject<string>('');
+  //currentControl$:Observable<any>=this.subjectString$.asObservable()
   copy!:FormGroup;
  skillsForm!:FormGroup;
  //personas
@@ -49,7 +60,7 @@ export class AboutComponent implements OnInit {
  // skills = new FormArray([]);
 //formGroup!: FormGroup
  // arrayName!: any;
- personForm: FormGroup = this.formBuilder.group({
+ personForm: FormGroup = this.datoBuilder.group({
   pname: ['', Validators.required],
   isIndian: ['', Validators.required],
   isEmp: ['', Validators.required],
@@ -65,12 +76,14 @@ companyFG: FormGroup = this.formBuilder.group({
     private formBuilder: FormBuilder,
     private fb: FormBuilder,private cdr: ChangeDetectorRef,private datoBuilder:FormBuilder) { 
     
-    
+     // const nombre = this.persForm?.get("nombre")?.value;
+    //  console.log('constructor nombre:',nombre)
     
   }
 
   ngOnInit(): void {
-    
+   // this.escucha()
+    this.escuchaEdad()
     this.handleNationality();
     this.handleEmploymentStatus();
     this.handleFavoriteBooks();
@@ -83,27 +96,123 @@ companyFG: FormGroup = this.formBuilder.group({
       name: '',
       skills: this.fb.array([]) ,
     });
-    
+ 
   this.arryForm=this.personas.group({
     gente: this.personas.array([]) 
   })
-
+this.observableOutput$=this.arryForm.valueChanges.pipe(
+  startWith(this.arryForm.value)
+)
+ this.persForm?.get('nombre')?.valueChanges.subscribe(nombre=>
+ {this.nombreF=nombre;
+  console.log('this.nombre',this.nombreF)}
+  );
+  this.persForm?.get('apellidos')?.valueChanges.subscribe(apellidos=>
+    {this.apellidosF=apellidos;
+     console.log('this.apellidos',this.apellidosF)}
+     );
+     this.persForm?.get('edad')?.valueChanges.subscribe(edad=>
+      {this.edadF=edad;
+       console.log('this.edad',this.edadF)}
+       );
+  
+this.arryForm.controls['gente'].valueChanges.subscribe(valor=>{
+  valor.map((obj: any)=>{
+console.log('!!!!',obj.apellidos,'nombre:',this.apellidosF)
+  // this.nombreF ==obj.nombre?alert('iguales'):alert('distintos');
+ //this.apellidosF !==obj.apellidos?this.emite(obj.apellidos):'';
+ let ape='apellidos';
+ let nom='nombre';
+ let edad='edad';
+  //apellidos ==obj.apellidos?console.log('no cambia apellido'):this.subjectString$.next(obj.apellidos)
+ // let edad = this.persForm?.get("edad");
+  // edad === obj.edad?'':this.subjectString$.next(obj.edad)
+      this.emiteApellido(obj.apellidos);
+      this.emiteNombre(obj.nombre);
+      this.emiteEdad(obj.edad)
+    //this.subjectString$.next(obj.nombre);
+//this.subjectString$.next(obj.apellidos)
+  //  this.subjectString$.next(obj.edad)
+  })
+ // this.subjectGente$.next(valor)
+  console.log('valor:',valor)
+})
+//this.arryForm.valueChanges.subscribe(data=>this.onChanged(data))
+/*
   this.arryForm.
   valueChanges.pipe(debounceTime(300)).
   subscribe((x: any)=>{
-    let nombre=x.gente[0].nombre;
-    this.persForm?.get("nombre")?.patchValue(nombre);
-    console.log('nombre:',nombre);
-    let apellidos=x.gente[0].apellidos;
+    //{gente:[{nombre,apellidos,edad}]}
+    let{gente}=x;
+    console.log('gente!!!:',[...gente]);
+    this.arryForm.get('gente[0].nombre')?.valueChanges.subscribe(val=>console.log('cambio'))
+    
+    console.log('x:',x)
+    let cantidad=x.gente.length;
+for(let i=0;i< cantidad;i++){
+  let nombre=x.gente[i].nombre;
+  this.persForm?.get("nombre")?.patchValue(nombre);
+  console.log('nombre:',nombre);
+  let apellidos=x.gente[i].apellidos;
     this.persForm?.get("apellidos")?.patchValue(apellidos);
-    let edad=x.gente[0].edad;
+    let edad=x.gente[i].edad;
     this.persForm?.get("edad")?.patchValue(edad);
-  })
+}*/
+   // let nombre=x.gente[0].nombre;
+//this.persForm?.get("nombre")?.patchValue(nombre);
+   // console.log('nombre:',nombre);
+    
+ // })
 
     
  
 
 
+  }
+  public escuchaEdad(){
+    this.escucha().subscribe(edad=>console.log('escucha edad :',edad))
+  }
+  public escucha(): Observable<string> {
+		return this.subjectEdad$.asObservable();
+	}
+  public emiteApellido(valor:string){
+    this.persForm?.get("apellidos")?.setValue(valor, { emitEvent: false });
+    console.log('recibio apellidos valor!!!:',valor)
+    this.subjectApellido$.next(valor)
+  }
+  public emiteNombre(valor:string){
+    this.persForm?.get("nombre")?.setValue(valor, { emitEvent: false });
+    console.log('recibio nombre valor!!!:',valor)
+    this.subjectNombre$.next(valor)
+  }
+  public emiteEdad(valor:string){
+    this.persForm?.get("edad")?.setValue(valor, { emitEvent: false });
+    console.log('recibio edad valor!!!:',valor)
+    this.subjectEdad$.next(valor);
+  }
+  public emite(valor:string,control:string): void {
+   const u= this.persForm.get('apellidos')?.value;
+   if(control =='apellidos'){
+     this.persForm?.get("apellidos")?.setValue(valor, { emitEvent: false });
+     console.log('recibio apellidos valor!!!:',valor)
+    // this.subjectString$.next(this.currentControl$)
+     this.subjectApellido$.next(valor)
+    }
+  if(control =='nombre'){
+    this.persForm?.get("nombre")?.setValue(valor, { emitEvent: false });
+    console.log('recibio nombre valor!!!:',valor)
+    this.subjectNombre$.next(valor)
+}
+  if(control =='edad'){
+    this.persForm?.get("edad")?.setValue(valor, { emitEvent: false })}
+    console.log('recibio edad valor!!!:',valor)
+    this.subjectEdad$.next(valor);
+  }
+
+  onChanged(data: any): void {
+    for(let control in this.arryForm.controls){
+      console.log(control)
+    }
   }
   get edad() {
     return this.persForm?.get('edad') as FormControl;
@@ -285,6 +394,20 @@ this.persForm?.get("nombre")?.patchValue(name);
 
 
   /*
+  https://medium.com/@mario_gl/c%C3%B3mo-programar-un-proveedor-de-mensajes-para-angular-con-rxjs-9e1b7f86ecc5
+  his.suscripcionMensajes = this.mensajesService.escucha().subscribe(
+			msj => {
+				if (msj.tema === 'tiempo') {
+					switch (msj.contenido) {
+						case 'inicio':
+							console.log('Se ha recibido la marca inicial de tiempo');
+							break;
+						case 'fin':
+							console.log('Se ha recibido la marca final de tiempo');
+							break;
+					}
+				}
+			}
   genteArray=new FormArray([], [Validators.required]);
 
  arryForm!:FormGroup;
