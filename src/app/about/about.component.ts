@@ -18,7 +18,7 @@ export class AboutComponent implements OnInit {
   apellidosF!:string;
   edadF!:string;
   observableOutput$!:Observable<string[]>;
-  subjectGente$:BehaviorSubject<string[]>=new BehaviorSubject<string[]>([]);
+  //subjectGente$:BehaviorSubject<string[]>=new BehaviorSubject<string[]>([]);
   subjectEdad$:BehaviorSubject<any>=new BehaviorSubject<string>('');
   subjectNombre$:BehaviorSubject<string>=new BehaviorSubject<string>('');
   subjectApellido$:BehaviorSubject<any>=new BehaviorSubject<string>('');
@@ -190,6 +190,7 @@ for(let i=0;i< cantidad;i++){
     console.log('recibio edad valor!!!:',valor)
     this.subjectEdad$.next(valor);
   }
+  /*
   public emite(valor:string,control:string): void {
    const u= this.persForm.get('apellidos')?.value;
    if(control =='apellidos'){
@@ -208,7 +209,7 @@ for(let i=0;i< cantidad;i++){
     console.log('recibio edad valor!!!:',valor)
     this.subjectEdad$.next(valor);
   }
-
+*/
   onChanged(data: any): void {
     for(let control in this.arryForm.controls){
       console.log(control)
@@ -380,6 +381,7 @@ this.persForm?.get("nombre")?.patchValue(name);
     
     console.log('Se elimino a:',this.gente.at(idx).get('nombre')?.value);
 		this.gente.removeAt(idx);
+    this.clear()
 	}
  onPersona(){
    console.log(this.arryForm.value)
